@@ -409,14 +409,8 @@
             submitButton.disabled = true;
             ui.sendingStatus.innerHTML = '<div class="alert alert-info">กำลังส่งผลการทดสอบ...</div>';
 
-            // ดึง base64 image จากทุก canvas ใน chart-container
-            const chartCanvases = ui.chartContainer.querySelectorAll('canvas');
-
-            const resizedCanvases = Array.from(chartCanvases).map(canvas => {
-                return resizeCanvas(canvas, 358, 150);
-            });
-
-            const chartImages = Array.from(chartCanvases).map(canvas => canvas.toDataURL("image/jpeg", 0.3));
+           const chartCanvases = ui.chartContainer.querySelectorAll('canvas');
+const chartImages = Array.from(chartCanvases).map(c => canvasToEmailJSDataURL(c));
 
             // สร้าง body HTML พร้อมแปะ <img src="...">
             const { type, scores } = calculateResult();
@@ -489,16 +483,40 @@
             </body>`;
         }
 
-        function resizeCanvas(canvas, width, height) {
-          const tmpCanvas = document.createElement("canvas");
-          tmpCanvas.width = width;
-          tmpCanvas.height = height;
-        
-          const ctx = tmpCanvas.getContext("2d");
-          ctx.drawImage(canvas, 0, 0, width, height);
-        
-          return tmpCanvas;
+       function canvasToEmailJSDataURL(canvas, width = 358, height = 150, maxSizeKB = 50) {
+    const temp = document.createElement('canvas');
+    temp.width = width;
+    temp.height = height;
+    const ctx = temp.getContext('2d');
+    ctx.drawImage(canvas, 0, 0, width, height);
+
+    let quality = 0.7;
+    let dataURL = temp.toDataURL('image/jpeg', quality);
+
+    // ลดคุณภาพจนไฟล์ < maxSizeKB
+    while ((dataURL.length / 1024) > maxSizeKB && quality > 0.05) {
+        quality -= 0.05;
+        dataURL = temp.toDataURL('image/jpeg', quality);
+    }
+
+    // สุดท้ายถ้าเกินก็ resize ลดลง 90% แล้ว retry
+    let resizeFactor = 0.9;
+    while ((dataURL.length / 1024) > maxSizeKB && width > 50 && height > 50) {
+        width = Math.floor(width * resizeFactor);
+        height = Math.floor(height * resizeFactor);
+        temp.width = width;
+        temp.height = height;
+        ctx.drawImage(canvas, 0, 0, width, height);
+        quality = 0.7;
+        dataURL = temp.toDataURL('image/jpeg', quality);
+        while ((dataURL.length / 1024) > maxSizeKB && quality > 0.05) {
+            quality -= 0.05;
+            dataURL = temp.toDataURL('image/jpeg', quality);
         }
+    }
+
+    return dataURL;
+}
         function startQuiz() {
             if (applicantIdentifierInput.value.trim() === '') {
                 alert('กรุณากรอกชื่อ-สกุล หรืออีเมล');
