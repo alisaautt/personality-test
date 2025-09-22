@@ -411,6 +411,8 @@
 
             // ดึง base64 image จากทุก canvas ใน chart-container
             const chartCanvases = ui.chartContainer.querySelectorAll('canvas');
+            const resized = resizeCanvas(chartCanvases, 358, 150);
+
             const chartImages = Array.from(chartCanvases).map(canvas => canvas.toDataURL("image/jpeg", 0.3));
 
             // สร้าง body HTML พร้อมแปะ <img src="...">
@@ -482,6 +484,17 @@
                     <p style="font-size: 0.8em; color: #888; text-align: center;">รายงานนี้สร้างขึ้นโดยอัตโนมัติจากระบบแบบทดสอบของ Colossal International Co., Ltd.</p>
                 </div>
             </body>`;
+        }
+
+        function resizeCanvas(canvas, width, height) {
+          const tmpCanvas = document.createElement("canvas");
+          tmpCanvas.width = width;
+          tmpCanvas.height = height;
+        
+          const ctx = tmpCanvas.getContext("2d");
+          ctx.drawImage(canvas, 0, 0, width, height);
+        
+          return tmpCanvas;
         }
         function startQuiz() {
             if (applicantIdentifierInput.value.trim() === '') {
