@@ -3,9 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, user-scalable=no" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>แบบทดสอบบุคลิกภาพ - Colossal International Co., Ltd.</title>
     <!-- Bootstrap 5 CDN -->
     <link href="./v3_files/bootstrap.min.css" rel="stylesheet">
@@ -126,6 +124,10 @@
                 margin-bottom: 8px;
                 margin-right: 0;
             }
+        }
+        #chart-container{
+            max-width: 358px;
+            margin: 0 auto;
         }
     </style>
 </head>
@@ -405,7 +407,7 @@
 
             // ดึง base64 image จากทุก canvas ใน chart-container
             const chartCanvases = ui.chartContainer.querySelectorAll('canvas');
-            const chartImages = Array.from(chartCanvases).map(canvas => canvas.toDataURL("image/jpeg", 0.4));
+            const chartImages = Array.from(chartCanvases).map(canvas => canvas.toDataURL("image/jpeg", 0.5));
 
             // สร้าง body HTML พร้อมแปะ <img src="...">
             const { type, scores } = calculateResult();
@@ -606,6 +608,7 @@ const whiteBgPlugin = {
                     options: {
                         indexAxis: 'y', // Makes the bar chart horizontal
                         responsive: true,
+                        maintainAspectRatio: false,
                         plugins: {
                             legend: {
                                 display: false
