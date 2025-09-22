@@ -127,7 +127,12 @@
         }
         #chart-container{
             max-width: 358px;
+            height:150px !important;
             margin: 0 auto;
+        }
+        #chart-container canvas {
+          width: 358px !important;
+            height:150px !important;
         }
     </style>
 </head>
@@ -607,7 +612,7 @@ const whiteBgPlugin = {
                     },
                     options: {
                         indexAxis: 'y', // Makes the bar chart horizontal
-                        responsive: true,
+                        responsive: false,
                         maintainAspectRatio: false,
                         plugins: {
                             legend: {
