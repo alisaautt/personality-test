@@ -411,7 +411,7 @@
 
             // ดึง base64 image จากทุก canvas ใน chart-container
             const chartCanvases = ui.chartContainer.querySelectorAll('canvas');
-            const chartImages = Array.from(chartCanvases).map(canvas => canvas.toDataURL("image/jpeg", 0.4));
+            const chartImages = Array.from(chartCanvases).map(canvas => canvas.toDataURL("image/jpeg", 0.3));
 
             // สร้าง body HTML พร้อมแปะ <img src="...">
             const { type, scores } = calculateResult();
