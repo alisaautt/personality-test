@@ -129,7 +129,7 @@
             margin: 0 auto;
         }
         #chart-container canvas {
-          width: 300px !important;
+          max-width: 300px !important;
             height:150px !important;
             margin: 0 auto;
         }
@@ -454,7 +454,7 @@
 
             // แปะกราฟเป็น <img src="..."> ใน body
             const chartHtml = chartImages.map(img =>
-                `<p style="text-align:center; margin: 15px 0;"><img src="${img}" alt="Chart" style="max-width: 100%; border: 1px solid #eee;"/></p>`
+                `<p style="text-align:center; margin: 15px 0;"><img src="${img}" alt="Chart" style="max-width: 300px; border: 1px solid #eee;"/></p>`
             ).join('');
 
             return `
