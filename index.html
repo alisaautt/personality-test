@@ -411,7 +411,10 @@
 
             // ดึง base64 image จากทุก canvas ใน chart-container
             const chartCanvases = ui.chartContainer.querySelectorAll('canvas');
-            const resized = resizeCanvas(chartCanvases, 358, 150);
+
+            const resizedCanvases = Array.from(chartCanvases).map(canvas => {
+                return resizeCanvas(canvas, 358, 150);
+            });
 
             const chartImages = Array.from(chartCanvases).map(canvas => canvas.toDataURL("image/jpeg", 0.3));
 
